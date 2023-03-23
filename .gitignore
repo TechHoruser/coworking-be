@@ -1,0 +1,32 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+build
+dist
+
+# Dependency directories
+node_modules
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Environment variables
+.env
+
+# VS Code specific files
+.vscode/
+*.code-workspace
+
+# macOS specific files
+.DS_Store
+
+# Jest coverage output
+coverage/
+
+# SQLite database file
+dev.db
