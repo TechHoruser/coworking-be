@@ -1,4 +1,4 @@
-import { Uuid } from '@/domain/value-object/Uuid'
+import { Uuid } from '@/domain/value-object/Uuid';
 import { Message } from '@/domain/entity/Message';
 
 export class Room {

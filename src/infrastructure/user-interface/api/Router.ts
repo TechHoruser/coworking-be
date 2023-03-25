@@ -1,6 +1,6 @@
-import "reflect-metadata";
+import 'reflect-metadata';
+import express, { Router } from 'express';
 import MessageRouter from '@/infrastructure/user-interface/api/message/Router';
-import express, { Router } from "express";
 
 const router: Router = express.Router();
 

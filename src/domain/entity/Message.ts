@@ -1,4 +1,4 @@
-import {Uuid} from '@/domain/value-object/Uuid'
+import { Uuid } from '@/domain/value-object/Uuid';
 
 export class Message {
   constructor(

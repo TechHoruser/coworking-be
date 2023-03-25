@@ -1,3 +1,3 @@
 export const TYPES = {
-  UuidGenerator: Symbol.for("UuidGenerator"),
+  UuidGenerator: Symbol.for('UuidGenerator'),
 };
