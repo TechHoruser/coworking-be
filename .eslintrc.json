@@ -38,16 +38,14 @@
       "error",
       "always"
     ],
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "class-methods-use-this": "off"
   },
   "settings": {
     "import/resolver": {
-      "alias": {
-        "map": [
-          [
-            "@",
-            "."
-          ]
+      "node": {
+        "extensions": [
+          ".ts"
         ]
       }
     }

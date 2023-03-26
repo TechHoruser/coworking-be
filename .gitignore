@@ -29,4 +29,5 @@ node_modules
 coverage/
 
 # SQLite database file
-dev.db
+*.db
+*.db-journal
