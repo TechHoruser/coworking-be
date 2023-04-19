@@ -11,7 +11,7 @@ const jwtExpiration = process.env.JWT_EXPIRATION as string;
 export class LoginController {
   async invoke(req: Request, res: Response): Promise<void> {
     try {
-      const { userName, password } = req.body;
+      const { userName, password } = req.body as {userName: string, password: string};
 
       // Buscar el usuario en la base de datos por email
       const user = await prisma.user.findFirst({
@@ -38,7 +38,7 @@ export class LoginController {
       }
 
       // Generar un token de JWT con el id del usuario
-      const token = jwt.sign({ id: user.id }, jwtSecret, { expiresIn: jwtExpiration });
+      const token = jwt.sign({ id: user.id }, jwtSecret, { expiresIn: Number(jwtExpiration) });
 
       // Enviar la respuesta con el token de JWT
       res.status(200).json({ token });
