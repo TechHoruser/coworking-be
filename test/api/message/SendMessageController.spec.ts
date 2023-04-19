@@ -11,7 +11,6 @@ describe('message_send', () => {
 
   before(async () => {
     token = await signUpToken();
-    console.log('token:', token);
     const room: Room = await createRoom(token);
     roomId = room.id;
   });
@@ -31,13 +30,9 @@ describe('message_send', () => {
 
 describe('send_message_and_fail', () => {
   let token: string;
-  let roomId: string;
 
   before(async () => {
     token = await signUpToken();
-    console.log('token:', token);
-    const room: Room = await createRoom(token);
-    roomId = room.id;
   });
 
   it('should fail to send a message', async () => {

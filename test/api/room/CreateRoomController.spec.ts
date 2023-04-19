@@ -18,7 +18,6 @@ describe('create_room', () => {
 
   before(async () => {
     token = await signUpToken();
-    console.log('token:', token);
   });
 
   it('should send a new room', async () => {
