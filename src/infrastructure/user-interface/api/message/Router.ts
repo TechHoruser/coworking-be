@@ -6,6 +6,6 @@ const sendMessageController = container.get<SendMessageController>(SendMessageCo
 
 const router: Router = express.Router();
 
-router.get('/send', sendMessageController.invoke.bind(sendMessageController));
+router.post('/send', sendMessageController.invoke.bind(sendMessageController));
 
 export default router;
