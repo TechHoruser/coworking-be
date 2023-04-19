@@ -13,7 +13,8 @@ interface routerInterface {
 
 interface MiddlewareInterface {
   middleware: RequestHandler,
-  routers: Router[],
+  routers?: Router[],
+  routerExcludes?: Router[],
 }
 
 const routes: routerInterface[] = [
@@ -34,9 +35,8 @@ const routes: routerInterface[] = [
 const middlewareUses: MiddlewareInterface[] = [
   {
     middleware: JwtDecodeMiddleware,
-    routers: [
-      MessageRouter,
-      RoomRouter,
+    routerExcludes: [
+      AuthRouter,
     ],
   },
 ];
@@ -45,7 +45,15 @@ routes.forEach((route: routerInterface) => {
   const middlewares: RequestHandler[] = [];
 
   middlewareUses.forEach((middlewareUse) => {
-    if (middlewareUse.routers.includes(route.router)) {
+    if (
+      middlewareUse.routerExcludes !== undefined
+      && !middlewareUse.routerExcludes.includes(route.router)
+    ) {
+      middlewares.push(middlewareUse.middleware);
+    } else if (
+      middlewareUse.routers !== undefined
+      && middlewareUse.routers.includes(route.router)
+    ) {
       middlewares.push(middlewareUse.middleware);
     }
   });
