@@ -1,11 +1,7 @@
-import "reflect-metadata";
-import express, { Application } from 'express';
-import Router from "@/infrastructure/user-interface/api/Router";
-
-const app: Application = express();
-
-app.use('/api', Router)
+import '@/dotenv';
+import app from '@/app';
 
 app.listen(3000, () => {
+  // eslint-disable-next-line no-console
   console.log('Servidor iniciado en el puerto 3000');
 });

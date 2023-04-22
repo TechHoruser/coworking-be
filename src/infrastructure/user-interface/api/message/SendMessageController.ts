@@ -1,38 +1,29 @@
 import { Request, Response } from 'express';
-import { UuidGenerator } from '@/domain/value-object/interface/UuidGenerator';
-import { injectable, inject } from "inversify";
-import { TYPES } from '@/infrastructure/domain-implementation/types';
-import { PrismaClient } from '@prisma/client';
+import * as passport from 'passport';
+import { injectable } from 'inversify';
+import { prisma } from '@/infrastructure/persistence/PrismaClient';
 
 @injectable()
 export class SendMessageController {
-  constructor(
-    @inject(TYPES.UuidGenerator) private readonly uuidGenerator: UuidGenerator,
-  ) {}
+  async invoke(req: Request, res: Response) {
+    const {
+      content,
+      roomId,
+    } = req.body as {
+      content: string,
+      roomId: string,
+    };
 
-  async invoke(req: Request, res: Response): Promise<void> {
-    const prisma = new PrismaClient();
-
-    const user = await prisma.user.create({
-      data: {
-        name: 'Fran',
-      },
-    });
-
-    const room = await prisma.room.create({
-      data: {
-        name: 'Room',
-      },
-    });    
+    const userId = req.user as string;
 
     const message = await prisma.message.create({
       data: {
-        content: 'message',
-        userId: user.id,
-        roomId: room.id,
+        content,
+        userId,
+        roomId,
       },
     });
 
-    res.send(message)
+    res.status(201).send(message);
   }
 }
