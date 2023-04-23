@@ -24,8 +24,7 @@ export const signUpResponse = async () => request(app)
   });
 
 export const signUpToken = async (): Promise<string> => {
-  await signUpResponse();
-  const res = await loginResponse();
+  const res = await signUpResponse();
   const body = res.body as { token: string };
   return body.token;
 };
@@ -40,7 +39,7 @@ describe('create_test_user_api', () => {
 });
 
 describe('login_api_with_test_user', () => {
-  before(async () => {
+  beforeEach(async () => {
     await signUpResponse();
   });
 

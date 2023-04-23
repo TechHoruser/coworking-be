@@ -9,7 +9,7 @@ describe('message_send', () => {
   let token: string;
   let roomId: string;
 
-  before(async () => {
+  beforeEach(async () => {
     token = await signUpToken();
     const room: Room = await createRoom(token);
     roomId = room.id;
@@ -31,7 +31,7 @@ describe('message_send', () => {
 describe('send_message_and_fail', () => {
   let token: string;
 
-  before(async () => {
+  beforeEach(async () => {
     token = await signUpToken();
   });
 
@@ -44,6 +44,6 @@ describe('send_message_and_fail', () => {
         roomId: 'invalid',
       });
 
-    expect(res.status).to.equal(400);
+    expect(res.status).to.equal(404);
   });
 });
