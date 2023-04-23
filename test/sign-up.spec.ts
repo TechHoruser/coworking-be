@@ -1,36 +1,44 @@
 import { Context } from 'mocha';
-import { exec } from 'child_process';
+import { execSync } from 'child_process';
 import path from 'path';
+import moment from 'moment-timezone';
 
-const clearDefault = () => exec('npx prisma migrate reset --force --skip-seed');
+const projectBasePath = path.join(__dirname, '..');
+const wrongDatabasesPath = path.join(
+  projectBasePath,
+  'dbs',
+  'error_test',
+);
+const datebaseOrigin = path.join(
+  projectBasePath,
+  'dev.db',
+);
+const clearDefault = () => {
+  execSync('npx prisma migrate reset --force --skip-seed');
+};
 
 // eslint-disable-next-line prefer-arrow-callback
 beforeEach(function beforeEach() {
   clearDefault();
 });
 
+// eslint-disable-next-line prefer-arrow-callback
+before(function before() {
+  execSync(`del /s /q ${wrongDatabasesPath}\\*.db`);
+});
+
 afterEach(function afterEachTest(this: Context) {
   if (this.currentTest?.state === 'failed') {
-    const datetime = new Date().toISOString().replace(/:/g, '-');
-    const testName = this.currentTest?.fullTitle().replace(/\s+/g, '_');
-    const projectBasePath = path.join(__dirname, '..');
-    const wrongDatebaseOrigin = path.join(
-      projectBasePath,
-      'dev.db',
-    );
+    const datetime = moment().tz('Europe/Madrid').format('YYYYMMDDHHmmssSSS');
+    const testFullTitle = this.currentTest?.fullTitle();
+    const testCase = (this.currentTest?.title ?? '').replace(/\s+/g, '_');
+    const testTitle = testFullTitle?.slice(0, testFullTitle.length - testCase.length - 1);
+    const testName = `${testTitle}-${testCase}`;
     const wrongDatebaseTarget = path.join(
-      projectBasePath,
-      'dbs',
-      'error_test',
-      `${datetime}_${testName}.db`,
+      wrongDatabasesPath,
+      `${datetime}-${testName}.db`,
     );
 
-    exec(
-      `cp ${wrongDatebaseOrigin} ${wrongDatebaseTarget}`,
-      () => exec(
-        `copy ${wrongDatebaseOrigin} ${wrongDatebaseTarget}`,
-        (error) => console.log(error),
-      ),
-    );
+    execSync(`copy ${datebaseOrigin} ${wrongDatebaseTarget}`);
   }
 });
