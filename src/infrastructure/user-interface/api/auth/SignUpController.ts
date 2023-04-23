@@ -43,7 +43,7 @@ export class SignUpController {
       });
 
       // Generar un token de JWT con el id del usuario
-      const token = jwt.sign({ id: user.id }, jwtSecret, { expiresIn: jwtExpiration });
+      const token = jwt.sign({ id: user.id }, jwtSecret, { expiresIn: Number(jwtExpiration) });
 
       // Enviar la respuesta con el token de JWT
       res.status(201).json({ token });

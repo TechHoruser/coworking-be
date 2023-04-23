@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
-import * as passport from 'passport';
 import { injectable } from 'inversify';
 import { prisma } from '@/infrastructure/persistence/PrismaClient';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { FOREING_KEY_CODE } from '@/infrastructure/persistence/PrismaConstants';
 
 @injectable()
 export class SendMessageController {
@@ -16,7 +17,7 @@ export class SendMessageController {
 
     const userId = req.user as string;
 
-    const message = await prisma.message.create({
+    const prismaMessage = prisma.message.create({
       data: {
         content,
         userId,
@@ -24,6 +25,15 @@ export class SendMessageController {
       },
     });
 
-    res.status(201).send(message);
+    prismaMessage
+      .then((message) => {
+        res.status(201).send({ uuid: message.id });
+      })
+      .catch((error: PrismaClientKnownRequestError) => {
+        if (error.code === FOREING_KEY_CODE) {
+          res.status(404).send();
+        }
+        res.status(500).send();
+      });
   }
 }
